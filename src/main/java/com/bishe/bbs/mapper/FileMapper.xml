@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bishe.bbs.mapper.FileMapper">
+
+    <resultMap id="File" type="BBSFile">
+        <id property="fileId" column="file_id" />
+        <result property="fileUrl" column="file_url" />
+        <result property="fileName" column="file_name" />
+        <result property="fileTitle" column="file_title" />
+        <result property="fileRealName" column="file_real_name" />
+        <association property="user" javaType="User">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="password" property="password" jdbcType="VARCHAR"/>
+            <result column="niko" property="niko" jdbcType="VARCHAR"/>
+            <result column="telephone" property="telephone" jdbcType="BIGINT"/>
+            <result column="email" property="email" jdbcType="VARCHAR"/>
+            <result column="sex" property="sex" jdbcType="INTEGER"/>
+            <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
+            <result column="image" property="image" jdbcType="VARCHAR"/>
+            <result column="Cardnum" property="cardnum" jdbcType="INTEGER"/>
+            <result column="time" property="time" jdbcType="VARCHAR"/>
+            <result column="flag" property="flag" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <insert id="addFile" parameterType="BBSFile">
+        insert into file(file_title, file_url, file_name, file_real_name, file_user) values(
+          #{fileTitle},#{fileUrl}, #{fileName}, #{fileRealName}, #{user.id}
+        )
+    </insert>
+
+    <select id="getFileList" resultMap="File">
+        select * from file left join user on file_user=id
+    </select>
+
+    <select id="getFileById" resultMap="File">
+        select * from file where file_id=#{value}
+    </select>
+
+    <delete id="deleteFileById">
+        delete from file where file_id = #{value}
+    </delete>
+
+</mapper>
